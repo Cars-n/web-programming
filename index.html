@@ -1,42 +1,56 @@
 <html>
+
 <head>
     <title>Web Programming</title>
+    <style> /* internal embedded stylesheet */
+        div {
+            color: purple;
+        }
+
+        button {
+            color: slateblue;
+            background-color: whitesmoke;
+        }
+    </style>
 </head>
+
 <body>
-    Hello there!
-    <ul>
-        <li>A</li>
-        <li>B</li>
-        <ul>
-            <li>CA</li>
-            <li>CB</li>
-            <li>CC</li>
-        </ul>
-    </ul>
+    <div id="area54"></div>
     <form id="numberForm"> <!-- id and name serve similar functions, ids are unique -->
-        <input type="number" name="number1" placeholder="Enter first number">
-        <input type="number" name="number2" placeholder="Enter second number">
-        <button type="submit">Submit</button>
+        <input type="number" id="number1" placeholder="Enter first number" 
+        style="border-color: cornflowerblue;"> <!-- inline css -->
+        <input type="number" id="number2" placeholder="Enter second number"
+        style="border-color: tomato;"> <!-- inline css -->
+        <button type="submit" id="submit_button">Compare</button>
     </form>
 
     <div id="result"></div>
 
     <script>
         var message = "Still loading elements...";
-        document.getElementById('result').innerText = message; // document referes to document object model, get element goes through whole dom to find element
-        document.addEventListener('DOMContentLoaded', function() { // will run once all elements in dom are loaded
+        document.getElementById('result').innerText = message; // document refers to document object model, get element goes through whole dom to find element
+        document.addEventListener('DOMContentLoaded', function () { // will run once all elements in dom are loaded
             var message = "All elements have been loaded";
             document.getElementById('result').innerText = message;
-            document.getElementById('numberForm').addEventListener('submit', function (event) {// will run once all elements in dom are loaded
+            document.getElementById('numberForm').addEventListener('submit', function (event) {// will run when form is submitted
                 event.preventDefault(); // prevents page reload
 
                 var number1 = document.getElementById('number1').value;
-
-                var message = "Submitted" + number1;
+                var number2 = document.getElementById('number2').value;
+                if (number1 < number2) {
+                    var message = "First number is greater than second number.";
+                } else if (number1 > number2) {
+                    var message = "First number is less than second number.";
+                } else {
+                    var message = "First number is equal to second number.";
+                }
                 document.getElementById('result').innerText = message;
+                document.getElementById('submit_button').disabled = true;
+                document.getElementById('area54').innerHTML = '<form id="numberForm"> <input type = "number" name = "number1" placeholder = "Enter first number" > <input type="number" name="number2" placeholder="Enter second number"> <button type="submit" id="submit_button">Compare</button> </form>';
             });
         });
     </script>
 </body>
+
 </html>
 <!-- python -m http.server 8080 -->
