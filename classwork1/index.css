@@ -1,0 +1,25 @@
+div {
+    color: purple;
+}
+
+button {
+    color: slateblue;
+    background-color: whitesmoke;
+}
+
+#HeaderBottom {
+    text-decoration: underline;
+}
+
+.colorfulHeader {
+    color: rgb(41, 149, 144);
+}
+
+.smallHeader {
+    font-style: italic;
+}
+
+h4[name="informativeText"]{
+    font-style: bold;
+    color: red;
+}

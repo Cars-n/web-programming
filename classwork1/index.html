@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <title>Web Programming</title>
+    <!-- least likely to most likely to override, external->internal embedded->inline styles-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+    <div id="area54">
+        <table>
+            <tr>
+                <td>A</td>
+                <td>B</td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>D</td>
+            </tr>
+        </table>
+    </div>
+
+    <table>
+        <tr>
+            <td>A</td>
+            <td><table>
+                <tr><td><img src="circle.jpg" width="15" height="15"></td></tr>
+                <tr><td>B</td></tr>
+                <tr><td>C....</td></tr>
+                <tr><td>
+                    <table>
+                        <tr>
+                            <td><img src="circle.jpg" width="15" height="15"></td>
+                            <td><img src="circle.jpg" width="15" height="15"></td>
+                        </tr>
+                    </table>
+                </td></tr>
+                <!-- doing this would make another column in all other rows
+                <tr><td>E1</td><td>E2</td></tr> -->
+            </table></td>
+        </tr>
+    </table>
+
+    <hr>
+    
+    <h1 class="colorfulHeader">Number</h1>
+    <h1 id="HeaderBottom" class="colorfulHeader">Comparison</h1>
+    <h4 class="colorfulHeader smallHeader">Enter your numbers below</h4>
+    <h4 class="colorfulHeader smallHeader" name="informativeText">Input a number in each field</h4>
+
+    <form id="numberForm"> <!-- id and name serve similar functions, ids are unique -->
+        <input type="number" id="number1" placeholder="Enter first number" 
+        style="border-color: cornflowerblue;"> <!-- inline css -->
+        <input type="number" id="number2" placeholder="Enter second number"
+        style="border-color: tomato;"> <!-- inline css -->
+        <button type="submit" id="submit_button">Compare</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        var message = "Still loading elements...";
+        document.getElementById('result').innerText = message; // document refers to document object model, get element goes through whole dom to find element
+        document.addEventListener('DOMContentLoaded', function () { // will run once all elements in dom are loaded
+            var message = "All elements have been loaded";
+            document.getElementById('result').innerText = message;
+            document.getElementById('numberForm').addEventListener('submit', function (event) {// will run when form is submitted
+                event.preventDefault(); // prevents page reload
+
+                var number1 = document.getElementById('number1').value;
+                var number2 = document.getElementById('number2').value;
+                if (number1 < number2) {
+                    var message = "First number is greater than second number.";
+                } else if (number1 > number2) {
+                    var message = "First number is less than second number.";
+                } else {
+                    var message = "First number is equal to second number.";
+                }
+                document.getElementById('result').innerText = message;
+                document.getElementById('submit_button').disabled = true;
+                document.getElementById('area54').innerHTML = '<hr>'; // can inject html with javascript
+            });
+        });
+    </script>
+</body>
+
+</html>
+<!-- python -m http.server 8080 -->
