@@ -1,6 +1,6 @@
 # flask allows for dynamically created webpages
 # run with flask --app hello run   
-from flask import Flask, jsonify #jsonify is a lib from flask thay turns strutures into json
+from flask import Flask, jsonify, send_from_directory #jsonify is a lib from flask thay turns strutures into json
 app = Flask(__name__)
 
 @app.route('/') # this is called a decorator
@@ -17,7 +17,7 @@ def get_goodbye():
     me = "Carson"
     return  f"Goodbye, {me} from the World!"
 
-@app.route("data")
+@app.route("/data")
 def get_data():
     data = [
         {"name":"suzy","type":"dog"},
@@ -28,11 +28,11 @@ def get_data():
 @app.route("/api/status")
 def get_status():
     data = [
-        {"name":"suzy","status":"sleeping"},
-        {"name":"dorthy","status":"hungry"}
+        { "name":"suzy", "status":"sleeping"},
+        { "name":"dorothy", "status":"hungry"},
     ]
     return jsonify(data)
 
-@app.route("/<path:path>")
-def serve_static():
+@app.route('/<path:path>')
+def serve_static(path):
     return send_from_directory('.', path)
