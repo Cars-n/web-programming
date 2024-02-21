@@ -7,7 +7,7 @@ app = Flask(__name__)
 def get_index():
     return  f"Hello, from the World!"
 
-@app.route('hello/')
+@app.route('/hello')
 def get_hello():
     me = "Carson"
     return  f"Hello, {me} from the World!"
