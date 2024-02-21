@@ -1,0 +1,17 @@
+>>> from mongita import MongitaClientDisk
+>>> client = MongitaClientDisk()
+>>> hello_world_db = client.hello_world_db
+>>> mongoose_collection = hello_world_db.mongoose_collection
+>>> mongoose_collection.insert_many([{'name': 'Meercat', 'does_not_eat': 'Snakes'},
+                                     {'name': 'Yellow mongoose', 'eats': 'Termites'}])
+<mongita.results.InsertManyResult object at 0x000000000>
+>>> mongoose_collection.count_documents({})
+2
+>>> mongoose_collection.update_one({'name': 'Meercat'}, {'$set': {"weight": 2}})
+<mongita.results.UpdateResult object at 00000000000>
+>>> mongoose_collection.find({'weight': {'$gt': 1}})
+<mongita.cursor.Cursor object at 00000000000>
+>>> list(mongoose_collection.find({'weight': {'$gt': 1}}))
+[{'_id': 'a1b2c3d4e5f6', 'name': 'Meercat', 'does_not_eat': 'Snakes', 'weight': 2}]
+>>> mongoose_collection.delete_one({'name': 'Meercat'})
+<mongita.results.DeleteResult object at 00000000000>
