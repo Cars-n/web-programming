@@ -1,0 +1,58 @@
+<html><body>
+    Hello!
+    <textarea id="myTextArea" rows="4" cols="40"></textarea>
+    <table id="moviesTable" border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Director</th>
+                <th>Plot</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Movie data will be inserted here -->
+        </tbody>
+    </table>
+    
+    <!-- js to get and display movie data -->
+    <script>
+    window.onload = function() {
+        var textarea = document.getElementById("myTextArea");
+        textarea.value = "Some value --- ";
+        var xhr = new XMLHttpRequest(); // object that allows for fetching data without page refresh
+        xhr.open('GET', 'classic_sci_fi_movies.json', true); // opens connection to movie json file
+        console.log("opened")
+        xhr.onreadystatechange = function(event) { // event listener for changes in xhr
+            if (xhr.readyState == 4 && xhr.status == 200) { // state 4 is DONE state state 2 is OK status for successful request
+                var movies = JSON.parse(xhr.responseText); // creates an array of movie objects
+                textarea.value = movies[0]["title"] // puts first movie title in area in text area
+
+            var tableBody = document.getElementById('moviesTable').getElementsByTagName('tbody')[0];        
+            movies.forEach(function(movie) { // iterates through each movie in array
+                        var row = tableBody.insertRow();
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        cell1.innerHTML = '<a href="#" class="movieTitle">' + movie.title + '</a>';
+                        cell2.innerHTML = movie.year;
+                        cell3.innerHTML = movie.director;
+                        cell4.innerHTML = movie.plot;
+                    });
+
+                    // add event listeners to movie title cells
+                    var movieTitles = document.querySelectorAll('.movieTitle');
+                    movieTitles.forEach(function(title) {
+                        title.addEventListener('click', function(event) {
+                            event.preventDefault(); // prevent default link behavior
+                            textarea.value = event.target.innerHTML; // populate textarea with movie title
+                        });
+                    });
+            }
+        }             
+        console.log("sending")
+        xhr.send() // sends the xhr request
+    }
+</script>
+</body></html>

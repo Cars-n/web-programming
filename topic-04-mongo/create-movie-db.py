@@ -1,13 +1,6 @@
-# flask allows for dynamically created webpages
-# run with flask --app hello run   
-from flask import Flask, jsonify, send_from_directory #jsonify is a lib from flask thay turns strutures into json
-from mongita import MongitaClientDisk
-import json
-
-app = Flask(__name__)
-
-
 # Creating a Mongo database with classic science fiction movies information
+import json
+from mongita import MongitaClientDisk
 
 classic_sci_fi_movies = [
     {"title": "Blade Runner", "year": 1982, "director": "Ridley Scott", "plot": "In a dystopian future, a blade runner must pursue and terminate four replicants who stole a ship in space and have returned to Earth to find their creator."},
@@ -27,23 +20,17 @@ classic_sci_fi_movies = [
 # create a mongita client connection
 client = MongitaClientDisk()
 
-# open a movie db
+# create a movie db
 movie_db = client.movie_db
 
-@app.route("/data/movies/scifi")
-def get_data_movies_scifi():
-    #with open("classic_sci_fi_movies.json","r") as f:
-    #    data = json.load(f)
+# create a scifi collection
+scifi_collection = movie_db.scifi_collection
 
-    # open a scifi collection
-    scifi_collection = movie_db.scifi_collection
-    data = list(scifi_collection.find({}))
-    print(data)
-    for item in data:
-        del item["_id"] # removes mongo object id
-    print(data)
-    return jsonify(data)
+# empty collection
+scifi_collection.delete_many({})
 
-@app.route('/<path:path>')
-def serve_static(path):
-    return send_from_directory('.', path)
+# insert movies into db
+scifi_collection.insert_many(classic_sci_fi_movies)
+
+# check insertion
+print(scifi_collection.count_documents({}), "records in scifi collection") # {} indicates a subset of the selection, leaving it empty selects the whole set
