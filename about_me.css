@@ -2,5 +2,27 @@ body {
     background-image: url(assets/blobs.svg);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
+    background-color: #303030;
     background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+#headshot {
+    vertical-align: middle;
+    float: left;
+    width: 150px;
+    height: 150px;
+    border-radius: 50px;
+    margin: 10px;
+}
+
+.info {
+    margin-top: 2vh;
+    font-family: "Londrina Solid", sans-serif;
+    font-size: x-large;
+    color: #303030;
+    max-width: 50%;
+}
+
+.contactIcon:hover {
+    filter: invert(100%);
 }
