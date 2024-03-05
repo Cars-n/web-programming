@@ -1,0 +1,26 @@
+body {
+    background-image: url(assets/blobs.svg);
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-color: #303030;
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+#headshot {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.info {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    font-family: "Londrina Solid", sans-serif;
+    font-size: large;
+    color: #303030;
+}
+
+.contactIcon:hover {
+    filter: invert(100%);
+}
