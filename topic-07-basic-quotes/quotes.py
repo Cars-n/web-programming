@@ -22,32 +22,12 @@ def get_quotes():
     quotes_collection = quotes_db.quotes_collection
     # load the data
     data = list(quotes_collection.find({}))
+    #print(data)
     for item in data:
         item["_id"] = str(item["_id"])
         item["object"] = ObjectId(item["_id"])
     # display the data
     return render_template("quotes.html", data=data)
-
-
-@app.route("/add", methods=["GET"])
-def get_add():
-    return render_template("add_quote.html")
-
-@app.route("/add", methods=["POST"])
-def post_add():
-    text = request.form.get("text", "")
-    author = request.form.get("author", "")
-    if text != "" and author != "":
-        # open the quotes collection
-        quotes_collection = quotes_db.quotes_collection
-        #insert the quote
-        quote_data = {
-            "text":text,
-            "author":author
-        }
-        quotes_collection.insert_one(quote_data)
-    # usually do a redirect('....')
-    return redirect("/quotes")
 
 @app.route("/delete", methods=["GET"])
 @app.route("/delete/<id>", methods=["GET"])
@@ -56,6 +36,47 @@ def get_delete(id=None):
         # open the quotes collection
         quotes_collection = quotes_db.quotes_collection
         # delete the item
+        print("Deleting Quote", list(quotes_collection.find({"_id":ObjectId(id)})))
         quotes_collection.delete_one({"_id":ObjectId(id)})
     # return to the quotes page
     return redirect("/quotes")
+    
+@app.route('/add', methods=["POST"])
+def post_add():
+    # open the quotes collection
+    quotes_collection = quotes_db.quotes_collection
+    # delete the item
+    text = request.form.get("text")
+    text = text.replace('<', '').replace('>', '')
+    author = request.form.get("author")
+    entry = {"text":text, "author":author}
+    quotes_collection.insert_one(entry)
+    # return to the quotes page
+    return redirect("/quotes")
+
+@app.route('/edit/<id>', methods=["GET"])
+def get_edit(id=None):
+    # open the quotes collection
+    quotes_collection = quotes_db.quotes_collection
+    # delete the item
+    data = (list(quotes_collection.find({"_id":ObjectId(id)})))[0] 
+    print("Editing Quote:", data)
+    return render_template("edit.html", data=data)
+
+@app.route('/edit/<id>', methods=["POST"])
+def post_edit(id=None):
+    # open the quotes collection
+    quotes_collection = quotes_db.quotes_collection
+
+    text = request.form.get("text")
+    text = text.replace('<', '').replace('>', '')
+    author = request.form.get("author")
+    #print(id)
+    entry = {"text":text, "author":author}
+    #print(entry)
+    quotes_collection.replace_one({"_id":ObjectId(id)}, entry)
+
+    # return to the quotes page
+    return redirect("/quotes")
+
+app.run()
