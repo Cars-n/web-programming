@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from mongita import MongitaClientDisk
 from bson import ObjectId
 
@@ -22,13 +22,32 @@ def get_quotes():
     quotes_collection = quotes_db.quotes_collection
     # load the data
     data = list(quotes_collection.find({}))
-    print(data)
-    print(data)
     for item in data:
         item["_id"] = str(item["_id"])
         item["object"] = ObjectId(item["_id"])
-    print(data)
+    # display the data
     return render_template("quotes.html", data=data)
+
+
+@app.route("/add", methods=["GET"])
+def get_add():
+    return render_template("add_quote.html")
+
+@app.route("/add", methods=["POST"])
+def post_add():
+    text = request.form.get("text", "")
+    author = request.form.get("author", "")
+    if text != "" and author != "":
+        # open the quotes collection
+        quotes_collection = quotes_db.quotes_collection
+        #insert the quote
+        quote_data = {
+            "text":text,
+            "author":author
+        }
+        quotes_collection.insert_one(quote_data)
+    # usually do a redirect('....')
+    return redirect("/quotes")
 
 @app.route("/delete", methods=["GET"])
 @app.route("/delete/<id>", methods=["GET"])
@@ -37,12 +56,6 @@ def get_delete(id=None):
         # open the quotes collection
         quotes_collection = quotes_db.quotes_collection
         # delete the item
-#        quotes_collection.delete_one(_id=ObjectId(id))
-
-# TODO: explain the fix to the old code here:
-        # data = list(quotes_collection.find({_id:ObjectId(id)}))
-        # the key here is to write _Python_ code, not semi-JS
-        data = list(quotes_collection.find({"_id":ObjectId(id)}))
-        print(data)
-# TODO: redirect here! 
-    return render_template("quotes.html", data=data)
+        quotes_collection.delete_one({"_id":ObjectId(id)})
+    # return to the quotes page
+    return redirect("/quotes")
